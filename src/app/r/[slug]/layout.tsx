@@ -1,3 +1,4 @@
+import { SubscribeLeaveToggle } from '@/components/SubscribeLeaveToggle'
 import { getAuthSession } from '@/lib/auth'
 import { db } from '@/lib/db'
 import { format } from 'date-fns'
@@ -68,6 +69,13 @@ export default async function Layout({
                               You created this community
                            </p>
                         </div>
+                     )}
+                     {subreddit.creatorId !== session?.user.id && (
+                        <SubscribeLeaveToggle
+                           isSubscribed={isSubscribed}
+                           subredditId={subreddit.id}
+                           subredditName={subreddit.name}
+                        />
                      )}
                   </dl>
                </div>
