@@ -1,3 +1,4 @@
+import CommentsSection from '@/components/CommentsSection'
 import { EditorOutput } from '@/components/EditorOutput'
 import { PostVoteServer } from '@/components/post-vote/PostVoteServer'
 import { buttonVariants } from '@/components/ui/Button'
@@ -88,7 +89,8 @@ export default async function PostDetails({ params }: PostDetailsProps) {
                      <Loader2 className="h-5 w-5 animate-spin text-zinc-500" />
                   }
                >
-                  {/* <CommentsSection postId={post?.id ?? cachedPost.id} /> */}
+                  {/* @ts-expect-error server component */}
+                  <CommentsSection postId={post?.id ?? cachedPost.id} />
                </Suspense>
             </div>
          </div>
