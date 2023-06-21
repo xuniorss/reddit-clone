@@ -1,12 +1,13 @@
 'use client'
 
+import { useOnClickOutside } from '@/hooks/use-on-click-outside'
 import { Prisma, Subreddit } from '@prisma/client'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import debounce from 'lodash.debounce'
 import { Users } from 'lucide-react'
-import { useRouter } from 'next/navigation'
-import { useCallback, useState } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import {
    Command,
    CommandEmpty,
@@ -18,6 +19,7 @@ import {
 
 export const SearchBar = () => {
    const [input, setInput] = useState<string>('')
+   const commandRef = useRef<HTMLDivElement>(null)
 
    const {
       data: queryResults,
@@ -37,13 +39,21 @@ export const SearchBar = () => {
    })
 
    const router = useRouter()
+   const pathname = usePathname()
 
    const request = debounce(async () => refetch(), 300)
 
    const debounceRequest = useCallback(() => request(), [request])
 
+   useOnClickOutside(commandRef, () => setInput(''))
+
+   useEffect(() => setInput(''), [pathname])
+
    return (
-      <Command className="relative z-50 max-w-lg overflow-visible rounded-lg border">
+      <Command
+         ref={commandRef}
+         className="relative z-50 max-w-lg overflow-visible rounded-lg border"
+      >
          <CommandInput
             value={input}
             onValueChange={(text) => {
